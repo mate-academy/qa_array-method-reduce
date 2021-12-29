@@ -1,4 +1,6 @@
-# Sum() - [put the task name here]
-[put a short description here] Implement the `sum` function returning a sum of two numbers
+# QA Array reduce method
+Write tests for a custom implementation of [Array.prototype.reduce](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce) method.
 
-**Read [the guideline](https://github.com/mate-academy/js_task-guideline/blob/master/README.md) before start**
+---
+- [Guideline](https://github.com/mate-academy/js_task-guideline/blob/master/README.md)
+- Read more about [Jest expectations](https://jestjs.io/uk/docs/expect)

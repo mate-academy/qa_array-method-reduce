@@ -1,7 +1,7 @@
 {
-  "name": "js-task-boilerplate",
+  "name": "qa_array-method-reduce",
   "version": "1.0.0",
-  "description": "js task boilerplate",
+  "description": "qa array method reduce",
   "main": "src/sum.js",
   "scripts": {
     "init": "mate-scripts init",
