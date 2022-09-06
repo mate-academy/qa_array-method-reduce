@@ -11,9 +11,7 @@ describe('reduce', () => {
     delete Array.prototype.reduce2;
   });
 
-  it('should ', () => {
-
+  it('should be defined', () => {
+    expect(Array.prototype.reduce2).toBeInstanceOf(Function);
   });
-
-  // Add tests here
 });
