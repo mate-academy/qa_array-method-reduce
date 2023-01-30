@@ -38,7 +38,7 @@ describe('reduce', () => {
   });
 
   it('should return the correct value', () => {
-    const sum = [1, 2, 3, 4, 5].reduce2((a, b) => a + b, 3);// start value - 10
+    const sum = [1, 2, 3, 4, 5].reduce2((a, b) => a + b, 3);
 
     expect(sum).toBe(18);
   });
