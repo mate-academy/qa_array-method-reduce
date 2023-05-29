@@ -12,11 +12,13 @@ describe('reduce', () => {
   });
 
   it('should be declared', () => {
-    expect(reduce).toBeInstanceOf(Function);
+    expect([].reduce2).toBeInstanceOf(Function);
   });
 
   it('should not call a callback for an empty array', () => {
     const f = jest.fn();
+
+    [].reduce2(f);
 
     expect(f).not.toHaveBeenCalled();
   });
@@ -24,7 +26,7 @@ describe('reduce', () => {
   it('should call a callback once per item', () => {
     const f = jest.fn();
 
-    [1, 2, 3].reduce(f, 0);
+    [1, 2, 3].reduce2(f, 0);
 
     expect(f).toHaveBeenCalledTimes(3);
   });
@@ -33,14 +35,14 @@ describe('reduce', () => {
     const f
       = jest.fn((accumulator, currentValue) => accumulator + currentValue);
 
-    expect([1, 2, 3].reduce(f)).toBe(6);
+    expect([1, 2, 3].reduce2(f)).toBe(6);
   });
 
   it('should pass previous element, current element, index, array', () => {
     const f
       = jest.fn((accumulator, currentValue) => accumulator + currentValue);
 
-    [1, 2, 3].reduce(f, 0);
+    [1, 2, 3].reduce2(f, 0);
 
     expect(f).toHaveBeenCalledWith(0, 1, 0, [1, 2, 3]);
     expect(f).toHaveBeenNthCalledWith(2, 1, 2, 1, [1, 2, 3]);
