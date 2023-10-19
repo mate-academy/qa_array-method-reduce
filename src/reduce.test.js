@@ -54,7 +54,7 @@ describe("reduce", () => {
     expect(result).toBe(expected);
   });
 
-  it("should handle cases where the array contains undefined or empty elements", () => {
+  it("should handle array contains undefined or empty elements", () => {
     const arr = [1, undefined, 2, "", 3, null, 4, false, 5];
     const reducer = (accumulator, currentValue) => accumulator + currentValue;
     const initialValue = 0;
