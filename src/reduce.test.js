@@ -15,7 +15,7 @@ describe("reduce", () => {
     const initialValue = 0;
 
     const result = reduce(arr, accumulatorReducer, initialValue);
-    const expected = 15; // Explicitly define the expected result
+    const expected = 15;
 
     expect(result).toBe(expected);
   });
@@ -25,7 +25,7 @@ describe("reduce", () => {
     const initialValue = 10;
 
     const result = reduce(arr, accumulatorReducer, initialValue);
-    const expected = 25; // Explicitly define the expected result
+    const expected = 25;
 
     expect(result).toBe(expected);
   });
@@ -37,7 +37,7 @@ describe("reduce", () => {
     const initialValue = 0;
 
     const result = reduce(arr, emptyArrayReducer, initialValue);
-    const expected = 0; // Explicitly define the expected result for an empty array
+    const expected = 0;
 
     expect(result).toBe(expected);
   });
@@ -46,7 +46,7 @@ describe("reduce", () => {
     const arr = [1, 2, 3, 4, 5];
 
     const result = reduce(arr, accumulatorReducer);
-    const expected = 15; // Explicitly define the expected result
+    const expected = 15;
 
     expect(result).toBe(expected);
   });
@@ -56,8 +56,7 @@ describe("reduce", () => {
     const initialValue = 0;
 
     const result = reduce(arr, accumulatorReducer, initialValue);
-    const expected = 15; // Explicitly define the expected result
-
+    const expected = 15;
     expect(result).toBe(expected);
   });
 });
