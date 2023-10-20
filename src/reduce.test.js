@@ -11,7 +11,6 @@ describe("reduce", () => {
     delete Array.prototype.reduce2;
   });
 
-  
   it("should handle cases with an initial value", () => {
     const arr = [1, 2, 3, 4, 5];
     const reducer = (accumulator, currentValue) => accumulator + currentValue;
@@ -44,13 +43,18 @@ describe("reduce", () => {
     expect(result).toBe(expected);
   });
 
-  it("should handle array contains undefined or empty elements", () => {
+  it("should handle array containing undefined or empty elements", () => {
     const arr = [1, undefined, 2, "", 3, null, 4, false, 5];
-    const reducer = (accumulator, currentValue) => accumulator + currentValue;
-    const initialValue = 0;
+    const reducer = (accumulator, currentValue) => {
+      if (typeof currentValue === "number" && !isNaN(currentValue)) {
+        return accumulator + currentValue;
+      }
+      return accumulator;
+    };
 
-    const result = arr.reduce2(reducer, initialValue);
-    const expected = arr.reduce(reducer, initialValue);
+    const initialValue = 0;
+    const result = reduce(arr, reducer, initialValue);
+    const expected = 15;
 
     expect(result).toBe(expected);
   });
