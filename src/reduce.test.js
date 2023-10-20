@@ -4,7 +4,7 @@ const { reduce } = require("./reduce");
 
 describe("reduce", () => {
   beforeAll(() => {
-    Array.prototype.reduce2 = reduce; // eslint-disable-line
+    Array.prototype.reduce2 = reduce;
   });
 
   afterAll(() => {
@@ -32,7 +32,7 @@ describe("reduce", () => {
     expect(result).toBeUndefined();
   });
 
-  it("should throw an error if the callback function is not provided", () => {
+  it("should show an error if the callback function is not provided", () => {
     const array = [1, 2, 3, 4, 5];
 
     expect(() => array.reduce2()).toThrowError(TypeError);
@@ -45,7 +45,7 @@ describe("reduce", () => {
     expect(result).toBe("abcd");
   });
 
-  it("should modify the startValue if the callback function modifies it", () => {
+  it("should modify the startValue if the function modifies it", () => {
     const array = [1, 2, 3, 4, 5];
     const startValue = { value: 0 };
 
@@ -57,7 +57,7 @@ describe("reduce", () => {
     expect(startValue.value).toBe(15);
   });
 
-  it("should return the single element of the array if it has only one element", () => {
+  it("should return the single element of the array with one element", () => {
     const array = [42];
     const result = array.reduce2((acc, curr) => acc + curr);
 
