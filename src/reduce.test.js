@@ -11,17 +11,7 @@ describe("reduce", () => {
     delete Array.prototype.reduce2;
   });
 
-  it("should apply a callback function and return the reduced value", () => {
-    const arr = [1, 2, 3, 4, 5];
-    const reducer = (accumulator, currentValue) => accumulator + currentValue;
-    const initialValue = 0;
-
-    const result = arr.reduce2(reducer, initialValue);
-    const expected = arr.reduce(reducer, initialValue);
-
-    expect(result).toBe(expected);
-  });
-
+  
   it("should handle cases with an initial value", () => {
     const arr = [1, 2, 3, 4, 5];
     const reducer = (accumulator, currentValue) => accumulator + currentValue;
