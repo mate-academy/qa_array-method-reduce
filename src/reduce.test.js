@@ -1,64 +1,45 @@
-"use strict";
+'use strict';
 
-const { reduce } = require("./reduce");
+const { reduce } = require('./reduce');
 
-describe("reduce", () => {
+describe('reduce', () => {
   beforeAll(() => {
-    Array.prototype.reduce2 = reduce; // eslint-disable-line
+    Array.prototype.reduce2 = reduce;
   });
 
   afterAll(() => {
     delete Array.prototype.reduce2;
   });
 
-  it("should handle cases with an initial value", () => {
-    const arr = [1, 2, 3, 4, 5];
-    const reducer = (accumulator, currentValue) => accumulator + currentValue;
-    const initialValue = 10;
+  it('should return `startValue` if array is empty', () => {
+    const sum = [].reduce2((a, b) => a + b, 9);
 
-    const result = arr.reduce2(reducer, initialValue);
-    const expected = arr.reduce(reducer, initialValue);
-
-    expect(result).toBe(expected);
+    expect(sum).toBe(9);
   });
 
-  it("should work with an empty array", () => {
-    const arr = [];
-    const reducer = (accumulator, currentValue) => accumulator + currentValue;
-    const initialValue = 0;
+  it('should run callback the correct number of times', () => {
+    const callback = jest.fn();
 
-    const result = reduce(arr, reducer, initialValue);
-    const expected = 0;
+    [1, 2, 3, 4, 5].reduce2(callback, 9);
 
-    expect(result).toBe(expected);
+    expect(callback).toHaveBeenCalledTimes(5);
   });
 
-  it("should work without an initial value", () => {
-    const arr = [1, 2, 3, 4, 5];
-    const reducer = (accumulator, currentValue) => accumulator + currentValue;
+  it('should run callback with the correct parameters', () => {
+    const callback = jest.fn((a, b) => a + b);
 
-    const result = arr.reduce2(reducer);
-    const expected = arr.reduce(reducer);
+    [1, 2, 3, 4, 5].reduce2(callback, 9);
 
-    expect(result).toBe(expected);
+    expect(callback.mock.calls[0]).toEqual([9, 1, 0, [1, 2, 3, 4, 5]]);
+    expect(callback.mock.calls[1]).toEqual([10, 2, 1, [1, 2, 3, 4, 5]]);
+    expect(callback.mock.calls[2]).toEqual([12, 3, 2, [1, 2, 3, 4, 5]]);
+    expect(callback.mock.calls[3]).toEqual([15, 4, 3, [1, 2, 3, 4, 5]]);
+    expect(callback.mock.calls[4]).toEqual([19, 5, 4, [1, 2, 3, 4, 5]]);
   });
 
-  it("should handle array containing undefined or empty elements", () => {
-    const arr = [1, undefined, 2, "", 3, null, 4, false, 5];
-    const initialValue = 0;
+  it('should return the correct value', () => {
+    const sum = [1, 2, 3, 4, 5].reduce2((a, b) => a + b, 10);
 
-    const result = reduce(
-      arr,
-      (accumulator, currentValue) => {
-        if (typeof currentValue === "number") {
-          return accumulator + currentValue;
-        }
-        return accumulator;
-      },
-      initialValue
-    );
-    const expected = 15;
-
-    expect(result).toBe(expected);
+    expect(sum).toBe(25);
   });
 });
