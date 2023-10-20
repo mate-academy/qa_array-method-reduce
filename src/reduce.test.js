@@ -3,8 +3,15 @@
 const { reduce } = require("./reduce");
 
 describe("reduce", () => {
+  const reducer = (accumulator, currentValue) => {
+    if (typeof currentValue === "number") {
+      return accumulator + currentValue;
+    }
+    return accumulator;
+  };
+
   beforeAll(() => {
-    Array.prototype.reduce2 = reduce; // eslint-disable-line
+    Array.prototype.reduce2 = reduce;
   });
 
   afterAll(() => {
@@ -13,7 +20,6 @@ describe("reduce", () => {
 
   it("should apply a callback function and return the reduced value", () => {
     const arr = [1, 2, 3, 4, 5];
-    const reducer = (accumulator, currentValue) => accumulator + currentValue;
     const initialValue = 0;
 
     const result = arr.reduce2(reducer, initialValue);
@@ -24,7 +30,6 @@ describe("reduce", () => {
 
   it("should handle cases with an initial value", () => {
     const arr = [1, 2, 3, 4, 5];
-    const reducer = (accumulator, currentValue) => accumulator + currentValue;
     const initialValue = 10;
 
     const result = arr.reduce2(reducer, initialValue);
@@ -35,7 +40,6 @@ describe("reduce", () => {
 
   it("should work with an empty array", () => {
     const arr = [];
-    const reducer = (accumulator, currentValue) => accumulator + currentValue;
     const initialValue = 0;
 
     const result = arr.reduce2(reducer, initialValue);
@@ -46,7 +50,6 @@ describe("reduce", () => {
 
   it("should work without an initial value", () => {
     const arr = [1, 2, 3, 4, 5];
-    const reducer = (accumulator, currentValue) => accumulator + currentValue;
 
     const result = arr.reduce2(reducer);
     const expected = arr.reduce(reducer);
@@ -54,9 +57,8 @@ describe("reduce", () => {
     expect(result).toBe(expected);
   });
 
-  it("should handle array contains undefined or empty elements", () => {
+  it("should handle array containing undefined or empty elements", () => {
     const arr = [1, undefined, 2, "", 3, null, 4, false, 5];
-    const reducer = (accumulator, currentValue) => accumulator + currentValue;
     const initialValue = 0;
 
     const result = arr.reduce2(reducer, initialValue);
