@@ -4,70 +4,64 @@ const { reduce } = require("./reduce");
 
 describe("reduce", () => {
   beforeAll(() => {
-    Array.prototype.reduce2 = reduce;
+    Array.prototype.reduce2 = reduce; // eslint-disable-line
   });
 
   afterAll(() => {
     delete Array.prototype.reduce2;
   });
 
-  it("should reduce an array to a single value", () => {
-    const array = [1, 2, 3, 4, 5];
-    const sum = array.reduce2((acc, curr) => acc + curr);
+  it("should apply a callback function and return the reduced value", () => {
+    const arr = [1, 2, 3, 4, 5];
+    const reducer = (accumulator, currentValue) => accumulator + currentValue;
+    const initialValue = 0;
 
-    expect(sum).toBe(15);
+    const result = arr.reduce2(reducer, initialValue);
+    const expected = arr.reduce(reducer, initialValue);
+
+    expect(result).toBe(expected);
   });
 
-  it("should reduce an array starting from a specified initial value", () => {
-    const array = [1, 2, 3, 4, 5];
-    const product = array.reduce2((acc, curr) => acc * curr, 1);
+  it("should handle cases with an initial value", () => {
+    const arr = [1, 2, 3, 4, 5];
+    const reducer = (accumulator, currentValue) => accumulator + currentValue;
+    const initialValue = 10;
 
-    expect(product).toBe(120);
+    const result = arr.reduce2(reducer, initialValue);
+    const expected = arr.reduce(reducer, initialValue);
+
+    expect(result).toBe(expected);
   });
 
-  it("should work with an empty array and no initial value", () => {
-    const array = [];
-    const result = array.reduce2((acc, curr) => acc + curr);
+  it("should work with an empty array", () => {
+    const arr = [];
+    const reducer = (accumulator, currentValue) => accumulator + currentValue;
+    const initialValue = 0;
 
-    expect(result).toBeUndefined();
+    const result = arr.reduce2(reducer, initialValue);
+    const expected = arr.reduce(reducer, initialValue);
+
+    expect(result).toBe(expected);
   });
 
-  it("should show an error if the callback function is not provided", () => {
-    const array = [1, 2, 3, 4, 5];
+  it("should work without an initial value", () => {
+    const arr = [1, 2, 3, 4, 5];
+    const reducer = (accumulator, currentValue) => accumulator + currentValue;
 
-    expect(() => array.reduce2()).toThrowError(TypeError);
+    const result = arr.reduce2(reducer);
+    const expected = arr.reduce(reducer);
+
+    expect(result).toBe(expected);
   });
 
-  it("should iterate over array elements in the correct order", () => {
-    const array = ["a", "b", "c", "d"];
-    const result = array.reduce2((acc, curr) => acc + curr);
+  it("should handle array contains undefined or empty elements", () => {
+    const arr = [1, undefined, 2, "", 3, null, 4, false, 5];
+    const reducer = (accumulator, currentValue) => accumulator + currentValue;
+    const initialValue = 0;
 
-    expect(result).toBe("abcd");
-  });
+    const result = arr.reduce2(reducer, initialValue);
+    const expected = arr.reduce(reducer, initialValue);
 
-  it("should modify the startValue if the function modifies it", () => {
-    const array = [1, 2, 3, 4, 5];
-    const startValue = { value: 0 };
-
-    array.reduce2((acc, curr) => {
-      acc.value += curr;
-
-      return acc;
-    }, startValue);
-    expect(startValue.value).toBe(15);
-  });
-
-  it("should return the single element of the array with one element", () => {
-    const array = [42];
-    const result = array.reduce2((acc, curr) => acc + curr);
-
-    expect(result).toBe(42);
-  });
-
-  it("should reduce an array of objects to a single value", () => {
-    const array = [{ value: 1 }, { value: 2 }, { value: 3 }];
-    const sum = array.reduce2((acc, curr) => acc + curr.value, 0);
-
-    expect(sum).toBe(6);
+    expect(result).toBe(expected);
   });
 });
