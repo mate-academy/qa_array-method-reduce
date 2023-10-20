@@ -4,26 +4,18 @@ const { reduce } = require("./reduce");
 
 describe("reduce", () => {
   const reducer = (accumulator, currentValue) => {
-    if (typeof currentValue === "number") {
+    if (typeof currentValue === 'number') {
       return accumulator + currentValue;
     }
     return accumulator;
   };
 
-  beforeAll(() => {
-    Array.prototype.reduce2 = reduce;
-  });
-
-  afterAll(() => {
-    delete Array.prototype.reduce2;
-  });
-
   it("should apply a callback function and return the reduced value", () => {
     const arr = [1, 2, 3, 4, 5];
     const initialValue = 0;
 
-    const result = arr.reduce2(reducer, initialValue);
-    const expected = arr.reduce(reducer, initialValue);
+    const result = reduce(arr, reducer, initialValue);
+    const expected = 15; // Explicitly define the expected result
 
     expect(result).toBe(expected);
   });
@@ -32,18 +24,19 @@ describe("reduce", () => {
     const arr = [1, 2, 3, 4, 5];
     const initialValue = 10;
 
-    const result = arr.reduce2(reducer, initialValue);
-    const expected = arr.reduce(reducer, initialValue);
+    const result = reduce(arr, reducer, initialValue);
+    const expected = 25; // Explicitly define the expected result
 
     expect(result).toBe(expected);
   });
 
   it("should work with an empty array", () => {
     const arr = [];
+    const reducer = (accumulator, currentValue) => accumulator + currentValue;
     const initialValue = 0;
 
-    const result = arr.reduce2(reducer, initialValue);
-    const expected = arr.reduce(reducer, initialValue);
+    const result = reduce(arr, reducer, initialValue);
+    const expected = 0; // Explicitly define the expected result for an empty array
 
     expect(result).toBe(expected);
   });
@@ -51,8 +44,8 @@ describe("reduce", () => {
   it("should work without an initial value", () => {
     const arr = [1, 2, 3, 4, 5];
 
-    const result = arr.reduce2(reducer);
-    const expected = arr.reduce(reducer);
+    const result = reduce(arr, reducer);
+    const expected = 15; // Explicitly define the expected result
 
     expect(result).toBe(expected);
   });
@@ -61,8 +54,8 @@ describe("reduce", () => {
     const arr = [1, undefined, 2, "", 3, null, 4, false, 5];
     const initialValue = 0;
 
-    const result = arr.reduce2(reducer, initialValue);
-    const expected = arr.reduce(reducer, initialValue);
+    const result = reduce(arr, reducer, initialValue);
+    const expected = 15; // Explicitly define the expected result
 
     expect(result).toBe(expected);
   });
