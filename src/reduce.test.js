@@ -3,14 +3,6 @@
 const { reduce } = require("./reduce");
 
 describe("reduce", () => {
-  beforeAll(() => {
-    Array.prototype.reduce2 = reduce;
-  });
-
-  afterAll(() => {
-    delete Array.prototype.reduce2;
-  });
-
   it("should be declared and be an instance of Function", () => {
     expect(reduce).toBeInstanceOf(Function);
   });
@@ -19,7 +11,7 @@ describe("reduce", () => {
     const items = [1, 2, 3, 4, 5];
     const f = jest.fn();
 
-    items.reduce2(f, 0);
+    reduce(items, f, 0);
 
     expect(f).toHaveBeenCalledTimes(5);
   });
@@ -31,7 +23,7 @@ describe("reduce", () => {
       const items = [1, 2, 3, 4, 5];
       const f = jest.fn();
 
-      items.reduce2(f);
+      reduce(items, f);
 
       expect(f).toHaveBeenCalledTimes(4);
     }
@@ -40,7 +32,7 @@ describe("reduce", () => {
   it("should not call a callback for an empty array", () => {
     const f = jest.fn();
 
-    [].reduce2(f);
+    reduce([], f);
 
     expect(f).not.toHaveBeenCalled();
   });
@@ -48,7 +40,7 @@ describe("reduce", () => {
   it("should return initialValue for an empty array", () => {
     const f = jest.fn();
 
-    const result = [].reduce2(f, 5);
+    const result = reduce([], f, 5);
 
     expect(result).toBe(5);
   });
@@ -60,7 +52,7 @@ describe("reduce", () => {
       const items = [10, 20, 30, 40];
       const f = jest.fn((prev, current) => prev + current);
 
-      items.reduce2(f, 0);
+      reduce(items, f, 0);
 
       expect(f).toHaveBeenNthCalledWith(1, 0, 10, 0, items);
       expect(f).toHaveBeenNthCalledWith(2, 10, 20, 1, items);
@@ -69,11 +61,11 @@ describe("reduce", () => {
     }
   );
 
-  it("should return correct value", () => {
+  it("should return the correct value", () => {
     const items = [10, 20, 30, 40];
     const f = jest.fn((prev, current) => prev + current);
 
-    const result = items.reduce2(f, 0);
+    const result = reduce(items, f, 0);
 
     expect(result).toBe(100);
   });
