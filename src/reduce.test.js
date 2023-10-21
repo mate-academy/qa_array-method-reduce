@@ -4,7 +4,7 @@ const { reduce } = require("./reduce");
 
 describe("reduce", () => {
   beforeAll(() => {
-    Array.prototype.reduce2 = reduce;
+    Array.prototype.reduce2 = reduce; // eslint-disable-line
   });
 
   afterAll(() => {
