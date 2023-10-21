@@ -3,9 +3,6 @@
 const { reduce } = require("./reduce");
 
 describe("reduce", () => {
-  const arr = [1, 2, 3, 4, 5];
-  let callback;
-
   beforeAll(() => {
     Array.prototype.reduce2 = reduce;
   });
@@ -14,64 +11,70 @@ describe("reduce", () => {
     delete Array.prototype.reduce2;
   });
 
-  beforeEach(() => {
-    callback = jest.fn((prev, current) => prev + current);
-  });
-
-  it("should be declared", () => {
+  it("should be declared and be an instance of Function", () => {
     expect(reduce).toBeInstanceOf(Function);
   });
 
-  it("should run callback for every element in array", function () {
-    arr.reduce2(callback, 0);
+  it("should call a callback once per item if initialValue specified", () => {
+    const items = [1, 2, 3, 4, 5];
+    const f = jest.fn();
 
-    expect(callback).toHaveBeenCalledTimes(arr.length);
+    items.reduce2(f, 0);
+
+    expect(f).toHaveBeenCalledTimes(5);
   });
 
   it(
-    "should run callback (arr.length - 1) times" +
-      "if initial value is not passed",
-    function () {
-      arr.reduce2(callback);
+    "should call a callback (array.length - 1) times" +
+      " if initialValue did not specified",
+    () => {
+      const items = [1, 2, 3, 4, 5];
+      const f = jest.fn();
 
-      expect(callback).toHaveBeenCalledTimes(arr.length - 1);
+      items.reduce2(f);
+
+      expect(f).toHaveBeenCalledTimes(4);
     }
   );
 
-  it("should return result of last callback call", function () {
-    const result = arr.reduce2(callback, 0);
+  it("should not call a callback for an empty array", () => {
+    const f = jest.fn();
 
-    expect(result).toBe(15);
+    [].reduce2(f);
+
+    expect(f).not.toHaveBeenCalled();
   });
 
-  it("should not run callback if array is empty", function () {
-    [].reduce2(callback);
+  it("should return initialValue for an empty array", () => {
+    const f = jest.fn();
 
-    expect(callback).not.toHaveBeenCalled();
-  });
+    const result = [].reduce2(f, 5);
 
-  it("should not mutate existing array", function () {
-    const testArr = [1, 2, 3];
-
-    testArr.reduce2(callback, 0);
-
-    expect(testArr).toEqual([1, 2, 3]);
+    expect(result).toBe(5);
   });
 
   it(
-    "should run callback for every element" + "with correct arguments",
-    function () {
-      arr.reduce2(callback, 0);
+    "should pass value from the previous call," +
+      " an element, an index and an array to a callback",
+    () => {
+      const items = [10, 20, 30, 40];
+      const f = jest.fn((prev, current) => prev + current);
 
-      expect(callback).toHaveBeenNthCalledWith(1, 0, 1, 0, arr);
+      items.reduce2(f, 0);
 
-      expect(callback).toHaveBeenNthCalledWith(2, 1, 2, 1, arr);
-
-      expect(callback).toHaveBeenNthCalledWith(3, 3, 3, 2, arr);
-
-      expect(callback).toHaveBeenNthCalledWith(4, 6, 4, 3, arr);
-
-      expect(callback).toHaveBeenNthCalledWith(5, 10, 5, 4, arr);
+      expect(f).toHaveBeenNthCalledWith(1, 0, 10, 0, items);
+      expect(f).toHaveBeenNthCalledWith(2, 10, 20, 1, items);
+      expect(f).toHaveBeenNthCalledWith(3, 30, 30, 2, items);
+      expect(f).toHaveBeenNthCalledWith(4, 60, 40, 3, items);
     }
   );
+
+  it("should return correct value", () => {
+    const items = [10, 20, 30, 40];
+    const f = jest.fn((prev, current) => prev + current);
+
+    const result = items.reduce2(f, 0);
+
+    expect(result).toBe(100);
+  });
 });
