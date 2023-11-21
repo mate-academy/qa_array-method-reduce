@@ -4,7 +4,7 @@ const { reduce } = require('./reduce');
 
 describe('reduce', () => {
   beforeAll(() => {
-    Array.prototype.reduce2 = reduce; // eslint-disable-line
+    Array.prototype.reduce2 = reduce;
   });
 
   afterAll(() => {
@@ -42,8 +42,11 @@ describe('reduce', () => {
 
   it('should work with array-like objects', () => {
     const arrayLike = { length: 3, 0: 1, 1: 2, 2: 3 };
-    const result = Array.prototype.reduce2.call(arrayLike, (acc, cur) => acc + cur, 0);
+    const result = Array.prototype.reduce2.call(
+      arrayLike, 
+      (acc, cur) => acc + cur, 
+      0
+    );
     expect(result).toBe(6);
   });
 });
-
