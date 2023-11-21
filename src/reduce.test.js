@@ -4,7 +4,7 @@ const { reduce } = require('./reduce');
 
 describe('reduce', () => {
   beforeAll(() => {
-    Array.prototype.reduce2 = reduce;
+    Array.prototype.reduce2 = reduce; // eslint-disable-line
   });
 
   afterAll(() => {
@@ -29,7 +29,8 @@ describe('reduce', () => {
     expect(result).toBe(15);
   });
 
-  it('should throw TypeError if array is empty and no initial value is provided', () => {
+  it('should throw TypeError if array is empty and no initial value is provided',
+ () => {
     const array = [];
     expect(() => array.reduce2((acc, cur) => acc + cur)).toThrow(TypeError);
   });
