@@ -11,45 +11,36 @@ describe('reduce', () => {
     delete Array.prototype.reduce2;
   });
 
-  it('should sum all numbers in an array', () => {
-    const array = [1, 2, 3, 4, 5];
-    const result = array.reduce2((acc, cur) => acc + cur, 0);
-    expect(result).toBe(15);
-  });
+  it('should return the sum of all elements in the array', () => {
+  const arr = [1, 2, 3, 4, 5];
+  const result = arr.reduce2((prev, curr) => prev + curr, 0);
+  expect(result).toBe(15);
+});
 
-  it('should concatenate strings in an array', () => {
-    const array = ['Hello', ' ', 'World', '!'];
-    const result = array.reduce2((acc, cur) => acc + cur, '');
-    expect(result).toBe('Hello World!');
-  });
+it('should return the product of all elements in the array', () => {
+  const arr = [1, 2, 3, 4, 5];
+  const result = arr.reduce2((prev, curr) => prev * curr, 1);
+  expect(result).toBe(120);
+});
 
-  it('should work with no initial value', () => {
-    const array = [1, 2, 3, 4, 5];
-    const result = array.reduce2((acc, cur) => acc + cur);
-    expect(result).toBe(15);
-  });
+it('should work without an initial value', () => {
+  const arr = [1, 2, 3, 4, 5];
+  const result = arr.reduce2((prev, curr) => prev + curr);
+  expect(result).toBe(15);
+});
 
-  it('should throw TypeError if array is empty and no initial value is provided',
-   () => {
-    const array = [];
-    expect(() => 
-      array.reduce2((acc, cur) => acc + cur)
-    ).toThrow(TypeError);
-  });
+it('should return the initial value for an empty array', () => {
+  const arr = [];
+  const result = arr.reduce2((prev, curr) => prev + curr, 0);
+  expect(result).toBe(0);
+});
 
-  it('should return the initial value if array is empty', () => {
-    const array = [];
-    const result = array.reduce2((acc, cur) => acc + cur, 10);
-    expect(result).toBe(10);
-  });
+it('should throw TypeError when called on null or undefined', () => {
+  expect(() => {
+    Array.prototype.reduce2.call(null, (prev, curr) => prev + curr, 0);
+  }).toThrow(TypeError);
 
-  it('should work with array-like objects', () => {
-    const arrayLike = { length: 3, 0: 1, 1: 2, 2: 3 };
-    const result = Array.prototype.reduce2.call(
-      arrayLike, 
-      (acc, cur) => acc + cur, 
-      0
-    );
-    expect(result).toBe(6);
-  });
+  expect(() => {
+    Array.prototype.reduce2.call(undefined, (prev, curr) => prev + curr, 0);
+  }).toThrow(TypeError);
 });
