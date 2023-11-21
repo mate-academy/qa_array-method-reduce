@@ -30,9 +30,10 @@ describe('reduce', () => {
   });
 
   it('should throw TypeError if array is empty and no initial value is provided',
- () => {
+   () => {
     const array = [];
-    expect(() => array.reduce2((acc, cur) => acc + cur)).toThrow(TypeError);
+    expect(() => array.reduce2((acc, cur) => acc + cur))
+      .toThrow(TypeError);
   });
 
   it('should return the initial value if array is empty', () => {
