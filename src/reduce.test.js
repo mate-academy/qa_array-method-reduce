@@ -47,9 +47,9 @@ describe('reduce', () => {
   });
 
   it('should right work with one element in arr', () => {
-    const expected = 50;
+    const expected = 0;
     const f = (a, b) => Math.min(a, b);
 
-    expect([50].reduce2(f, 10)).toEqual(expected);
+    expect([50].reduce2(f, 0)).toEqual(expected);
   });
 });
