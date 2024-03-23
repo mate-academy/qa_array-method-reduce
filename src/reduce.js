@@ -7,6 +7,10 @@
  * @returns {*}
  */
 function reduce(callback, startValue) {
+  if (!startValue && this.length === 0) {
+    throw new TypeError('No start value provided and no items in the array');
+  }
+
   let prev = startValue;
   let startIndex = 0;
 
