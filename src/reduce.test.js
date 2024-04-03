@@ -73,4 +73,13 @@ describe('reduce', () => {
 
     expect(f1).toHaveBeenCalledWith(items);
   });
+
+  it('should work correctly without initiallValue', () => {
+    const items = [1, 2, 3];
+    const f1 = jest.fn((a, b) => a + b);
+
+    const result = items.reduce2(f1);
+
+    expect(result).toBe(6);
+  });
 });
