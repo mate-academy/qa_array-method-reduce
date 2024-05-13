@@ -35,7 +35,7 @@ describe('reduce', () => {
   });
 
   it('callback can do different actions', () => {
-    const cb = (prev, current) => (prev * current) + 1;
+    const cb = (prev, current) => prev * current + 1;
     const result = [1, 3, 3].reduce2(cb, 10);
 
     expect(result).toBe(103);
@@ -71,5 +71,23 @@ describe('reduce', () => {
     [1, 2, 3, 4, 5].reduce2(cb);
 
     expect(cb).toHaveBeenCalledTimes(4);
+  });
+
+  it('the callback should accept index as one of its args', () => {
+    const cb = jest.fn((prev, current, ind) => (prev + current) + ind);
+
+    const result = [1, 2, 3].reduce2(cb);
+
+    expect(result).toBe(9);
+  });
+
+  it('the callback should accept array as one of its args', () => {
+    const cb = jest.fn((prev, current, ind, arr) => {
+      return arr[ind] + (prev + current);
+    });
+
+    const result = [1, 2, 3].reduce2(cb);
+
+    expect(result).toBe(11);
   });
 });
