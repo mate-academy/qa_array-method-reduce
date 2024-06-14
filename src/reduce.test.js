@@ -23,7 +23,7 @@ describe('reduce', () => {
 
     items.reduce2(cb, 10);
 
-    expect(cb).toHaveBeenCalledTimes(4);
+    expect(cb).toHaveBeenCalledTimes(items.length);
   });
 
   it(`should call a callback for each item starting from 2nd item `
@@ -32,15 +32,23 @@ describe('reduce', () => {
 
     items.reduce2(cb);
 
-    expect(cb).toHaveBeenCalledTimes(3);
+    expect(cb).toHaveBeenCalledTimes(items.length - 1);
   });
 
-  it(`should return correct result`, () => {
+  it(`should return correct result without start value`, () => {
     const cb = (prev, item) => prev + item;
 
     const result = items.reduce2(cb);
 
     expect(result).toBe(100);
+  });
+
+  it(`should return correct result if start value is specified`, () => {
+    const cb = (prev, item) => prev + item;
+
+    const result = items.reduce2(cb, '');
+
+    expect(result).toBe('10203040');
   });
 
   it(`should return the array item for the array with one item `
@@ -81,8 +89,8 @@ describe('reduce', () => {
   /*
   I decided to add this test because in the original reduce() method
   if the array is empty and start value isn't specified
-  then and error is trown
-  */
+  then and error is trown:
+
   it(`should throw error if the array is empty `
     + `and start value isn't specified`, () => {
     const cb = (prev, item) => prev + item;
@@ -91,4 +99,5 @@ describe('reduce', () => {
 
     expect(result).toThrow();
   });
+  */
 });
