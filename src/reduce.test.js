@@ -14,6 +14,4 @@ describe('reduce', () => {
   it('should ', () => {
 
   });
-
-  // Add tests here
 });
