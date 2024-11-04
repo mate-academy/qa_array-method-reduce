@@ -17,7 +17,6 @@ describe('reduce', () => {
 
   it('should throw an error if cb is not a func or not passed', () => {
     // eslint-disable-next-line no-undef
-    expect(() => [].reduce2(_, 2)).toThrow();
     expect(() => [].reduce2(null, 2)).toThrow();
     expect(() => [].reduce2(undefined, 2)).toThrow();
     expect(() => [].reduce2({}, 2)).toThrow();
