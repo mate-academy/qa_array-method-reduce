@@ -37,6 +37,7 @@ describe('reduce', () => {
     testArr.reduce2(cb, 0);
 
     expect(cb.mock.calls[0].length).toBe(4);
+    expect(cb.mock.calls[0]).toEqual([0, 1, 0, testArr]);
   });
 
   it('returns start value for the empty array', () => {
