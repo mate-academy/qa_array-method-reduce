@@ -6,6 +6,7 @@
  *
  * @returns {*}
  */
+
 function reduce(callback, startValue) {
   let prev = startValue;
   let startIndex = 0;
