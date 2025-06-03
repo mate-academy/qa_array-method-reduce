@@ -24,6 +24,14 @@ describe('reduce', () => {
     expect(result).toBe(100);
   });
 
+  it(
+    'should throw TypeError when array is empty and no initial value '
+    + 'is provided',
+    () => {
+      expect(() => reduce([], (acc, curr) => acc + curr)).toThrow(TypeError);
+    }
+  );
+
   it('should use the first element as initial value if not provided', () => {
     const arr = [5, 10, 15];
     const result = reduce(arr, (acc, curr) => acc + curr);

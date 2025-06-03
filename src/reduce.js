@@ -16,6 +16,12 @@ function reduce(array, callback, initialValue) {
   }
 
   const hasInitialValue = arguments.length > 2;
+
+  // Add this check:
+  if (array.length === 0 && !hasInitialValue) {
+    throw new TypeError('Reduce of empty array with no initial value');
+  }
+
   let acc = hasInitialValue ? initialValue : array[0];
   const startIndex = hasInitialValue ? 0 : 1;
 
