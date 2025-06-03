@@ -6,20 +6,30 @@
  *
  * @returns {*}
  */
-function reduce(callback, startValue) {
-  let prev = startValue;
-  let startIndex = 0;
-
-  if (arguments.length < 2) {
-    startIndex = 1;
-    prev = this[0];
+function reduce(array, callback, initialValue) {
+  if (!Array.isArray(array)) {
+    throw new TypeError('First argument must be an array');
   }
 
-  for (let i = startIndex; i < this.length; i++) {
-    prev = callback(prev, this[i], i, this);
+  if (typeof callback !== 'function') {
+    throw new TypeError('Second argument must be a function');
   }
 
-  return prev;
+  const hasInitialValue = arguments.length > 2;
+
+  // Add this check:
+  if (array.length === 0 && !hasInitialValue) {
+    throw new TypeError('Reduce of empty array with no initial value');
+  }
+
+  let acc = hasInitialValue ? initialValue : array[0];
+  const startIndex = hasInitialValue ? 0 : 1;
+
+  for (let i = startIndex; i < array.length; i++) {
+    acc = callback(acc, array[i], i, array);
+  }
+
+  return acc;
 }
 
 module.exports = { reduce };
