@@ -7,16 +7,61 @@
  * @returns {*}
  */
 function reduce(callback, startValue) {
-  let prev = startValue;
-  let startIndex = 0;
-
-  if (arguments.length < 2) {
-    startIndex = 1;
-    prev = this[0];
+  if (typeof callback !== 'function') {
+    throw new TypeError('Callback is not a function');
   }
 
-  for (let i = startIndex; i < this.length; i++) {
-    prev = callback(prev, this[i], i, this);
+  const copyOfThis = { ...this };
+  const isArrayLike = this instanceof Object
+    && this.hasOwnProperty('length')
+    && typeof this.length === 'number'
+    && !Array.isArray(this);
+
+  Object.defineProperty(copyOfThis, 'length', {
+    value: this.length,
+    enumerable: false,
+  });
+
+  const len = copyOfThis.length >>> 0;
+  const hasStartValue = arguments.length >= 2;
+
+  if (len < 1 && !hasStartValue) {
+    // eslint-disable-next-line max-len
+    throw new TypeError(`Array is empty and doesn't have 'startValue' argument`);
+  }
+
+  let prev = startValue;
+  let start = 0;
+
+  if (!hasStartValue) {
+    for (let i = 0; i < len; i++) {
+      if (i in copyOfThis) {
+        prev = copyOfThis[i];
+        start = i + 1;
+        break;
+      } else if (i === len) {
+        throw new TypeError(`Index hasn't been founded`);
+      }
+    }
+  }
+
+  const copyOfThisArr = Object.assign([], copyOfThis);
+
+  for (let i = start; i < len; i++) {
+    if (!isArrayLike) {
+      if (!(i in copyOfThisArr)) {
+        continue;
+      }
+
+      prev = callback(prev, copyOfThisArr[i], i, copyOfThisArr);
+      continue;
+    }
+
+    if (!(i in copyOfThis)) {
+      continue;
+    }
+
+    prev = callback(prev, copyOfThis[i], i, copyOfThis);
   }
 
   return prev;
