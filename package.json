@@ -20,10 +20,10 @@
     "eslint": "^5.16.0",
     "eslint-plugin-jest": "^22.4.1",
     "eslint-plugin-node": "^8.0.1",
+    "fast-check": "^4.3.0",
     "jest": "^24.7.0"
   },
   "mateAcademy": {
     "projectType": "javascript"
-  },
-  "dependencies": {}
+  }
 }
