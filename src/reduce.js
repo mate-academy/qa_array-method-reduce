@@ -10,6 +10,10 @@ function reduce(callback, startValue) {
   let prev = startValue;
   let startIndex = 0;
 
+  if (typeof callback !== 'function') {
+    throw new Error('Callback has to be function.');
+  }
+
   if (arguments.length < 2) {
     startIndex = 1;
     prev = this[0];

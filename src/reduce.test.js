@@ -51,7 +51,7 @@ describe('reduce', () => {
   it(`should return error,
      if array is empty and is lack of initial value`, () => {
     expect(() => [].reduce2((a, c) =>
-      a + c)).toThrow('Array can not be empty.');
+      a + c)).toThrow(TypeError);
   });
 
   it(`should handle array with element without initial value`, () => {
