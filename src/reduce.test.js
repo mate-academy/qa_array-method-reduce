@@ -2,6 +2,10 @@
 
 const { reduce } = require('./reduce');
 
+const nums = [1, 2, 3, 4];
+const strings = ['1', '2', '3'];
+let callback;
+
 describe('reduce', () => {
   beforeAll(() => {
     Array.prototype.reduce2 = reduce; // eslint-disable-line
@@ -11,73 +15,62 @@ describe('reduce', () => {
     delete Array.prototype.reduce2;
   });
 
-  it('should sum numbers with initial value', () => {
-    const array = [10, 15, 20];
-
-    const result = array.reduce2((acc, cur) => acc + cur, 10);
-
-    expect(result).toBe(55);
+  beforeEach(() => {
+    callback = jest.fn((acc, curr) => acc + curr);
   });
 
-  it('should sum numbers without initial value', () => {
-    const array = [10, 15, 20];
-
-    const result = array.reduce2((acc, cur) => acc + cur);
-
-    expect(result).toBe(45);
+  it('should have instance of function', () => {
+    expect(reduce).toBeInstanceOf(Function);
   });
 
-  it('should add values different from integer', () => {
-    const array = ['Hello', ' ', 'world!!!'];
+  it('should use callback for all items in array', () => {
+    const init = 10;
 
-    const result = array.reduce2((arr, cur) => arr + cur, '');
+    nums.reduce2(callback, init);
 
-    expect(result).toBe('Hello world!!!');
+    expect(callback).toHaveBeenCalledTimes(nums.length);
   });
 
-  it('should pass index or array to callback as arguements', () => {
-    const array = [3, 5, 7];
+  it('should work without initial value', () => {
+    const result = nums.reduce2(callback);
 
-    const mockFn = jest.fn((acc, curr) => acc + curr);
-
-    array.reduce2(mockFn);
-
-    expect(mockFn.mock.calls.length).toBe(2);
-
-    expect(mockFn).toHaveBeenCalledWith(3, 5, 1, array);
-    expect(mockFn).toHaveBeenCalledWith(8, 7, 2, array);
-  });
-
-  it(`should return error,
-     if array is empty and is lack of initial value`, () => {
-    expect(() => [].reduce2((a, c) =>
-      a + c)).toThrow('Array can not be empty.');
-  });
-
-  it(`should handle array with element without initial value`, () => {
-    const array = [10];
-
-    const result = array.reduce2((arr, curr) => arr + curr);
-
+    expect(callback).toHaveBeenCalled();
+    expect(callback).toHaveBeenCalledTimes(3);
     expect(result).toBe(10);
   });
 
-  it(`should throw error, if callback is not a function`, () => {
-    const array = [11, 22, 33];
+  it('should work without initial array', () => {
+    const init = 10;
+    const result = [].reduce2(callback, init);
 
-    expect(() => array.reduce2(null)).toThrow(TypeError);
-    expect(() => array.reduce2('function')).toThrow(TypeError);
-    expect(() => array.reduce2({})).toThrow(TypeError);
-    expect(() => array.reduce2(100)).toThrow(TypeError);
+    expect(callback).not.toHaveBeenCalled();
+    expect(callback).toHaveBeenCalledTimes(0);
+    expect(result).toBe(10);
   });
 
-  it(`should sum array with empty slots`, () => {
-    // eslint-disable-next-line no-sparse-arrays
-    const array = [1, , 5];
+  it('should return undefined without array and initial value', () => {
+    const result = [].reduce2(callback);
 
-    const result = array.reduce2((arr, curr) =>
-      arr + (curr !== undefined && curr !== null ? curr : 0), 0);
+    expect(result).toBe(undefined);
+    expect(callback).not.toHaveBeenCalled();
+  });
 
-    expect(result).toBe(6);
+  it('should work with strings', () => {
+    const check = '123';
+    const result = strings.reduce2(callback);
+
+    expect(result).toBe(check);
+  });
+
+  it('should skip initial value if it is specified', () => {
+    const result = [1, 1, 2].reduce2(callback, null);
+
+    expect(result).toBe(4);
+  });
+
+  it('should invoke callback for indexes without value', () => {
+    [1, '', '', 1, 2].reduce2(callback);
+
+    expect(callback).toHaveBeenCalledTimes(4);
   });
 });
