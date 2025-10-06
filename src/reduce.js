@@ -16,7 +16,9 @@ function reduce(callback, startValue) {
   }
 
   for (let i = startIndex; i < this.length; i++) {
-    prev = callback(prev, this[i], i, this);
+    if (i in this) {
+      prev = callback(prev, this[i], i, this);
+    }
   }
 
   return prev;
