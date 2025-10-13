@@ -1,18 +1,25 @@
 'use strict';
 
 /**
+ * Custom implementation of Array.prototype.reduce
+ *
  * @param {function} callback
  * @param {*} startValue
  *
  * @returns {*}
  */
 function reduce(callback, startValue) {
-  let prev = startValue;
+  let prev;
   let startIndex = 0;
 
   if (arguments.length < 2) {
-    startIndex = 1;
+    if (this.length === 0) {
+      throw new TypeError('Reduce of empty array with no initial value');
+    }
     prev = this[0];
+    startIndex = 1;
+  } else {
+    prev = startValue;
   }
 
   for (let i = startIndex; i < this.length; i++) {
@@ -23,3 +30,4 @@ function reduce(callback, startValue) {
 }
 
 module.exports = { reduce };
+
