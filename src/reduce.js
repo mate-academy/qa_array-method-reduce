@@ -9,6 +9,10 @@
  * @returns {*}
  */
 function reduce(callback, startValue) {
+  if (typeof callback !== 'function') {
+    throw new TypeError(callback + ' is not a function');
+  }
+
   let prev;
   let startIndex = 0;
 
@@ -23,6 +27,7 @@ function reduce(callback, startValue) {
   }
 
   for (let i = startIndex; i < this.length; i++) {
+    if (!(i in this)) continue; // skip sparse array holes
     prev = callback(prev, this[i], i, this);
   }
 
@@ -30,4 +35,3 @@ function reduce(callback, startValue) {
 }
 
 module.exports = { reduce };
-
