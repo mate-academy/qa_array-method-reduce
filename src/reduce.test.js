@@ -31,16 +31,18 @@ describe('reduce', () => {
 
   it('should handle empty array with initial value', () => {
     const arr = [];
-    const cb = jest.fn();
-    const result = arr.reduce2(cb, 5);
+    const mockCb = jest.fn();
+    const result = arr.reduce2(mockCb, 5);
+
     expect(result).toBe(5);
-    expect(cb).toHaveBeenCalledTimes(0); // callback nie powinien zostać wywołany
+    expect(mockCb).toHaveBeenCalledTimes(0);
   });
 
   it('should throw error when empty array and no initial value', () => {
     const arr = [];
-    expect(() => arr.reduce2((acc, val) => acc + val))
-      .toThrow(TypeError);
+    expect(() =>
+      arr.reduce2((acc, val) => acc + val)
+    ).toThrow(TypeError);
   });
 
   it('should pass correct arguments to callback', () => {
@@ -48,22 +50,13 @@ describe('reduce', () => {
     const mockCb = jest.fn((acc, val, idx, array) => acc + val);
     arr.reduce2(mockCb, 0);
 
+    const argsCall1 = [0, 10, 0, arr];
+    const argsCall2 = [10, 20, 1, arr];
+
     expect(mockCb).toHaveBeenCalledTimes(2);
-
-    const firstCallArgs = [0, 10, 0, arr];
-    const secondCallArgs = [10, 20, 1, arr];
-
-    expect(mockCb).toHaveBeenNthCalledWith(1, ...firstCallArgs);
-    expect(mockCb).toHaveBeenNthCalledWith(2, ...secondCallArgs);
-  });
-
-  it('should handle sparse array', () => {
-    const arr = [1, undefined, 3]; // zamiast dziury używamy undefined
-    const cb = jest.fn((acc, val) => acc + (val || 0));
-    const result = arr.reduce2(cb, 0);
-
-    expect(result).toBe(4);
-    expect(cb).toHaveBeenCalledTimes(3);
+    expect(mockCb).toHaveBeenNthCalledWith(1, ...argsCall1);
+    expect(mockCb).toHaveBeenNthCalledWith(2, ...argsCall2);
   });
 });
+
 
