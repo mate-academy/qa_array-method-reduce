@@ -65,6 +65,13 @@ describe('reduce', () => {
     expect(cb).not.toHaveBeenCalled();
   });
 
+  it('throws TypeError for empty array without initial value', () => {
+    const array = [];
+    const cb = jest.fn();
+
+    expect(() => array.reduce2(cb)).toThrow(TypeError);
+  });
+
   it('skips holes in sparse arrays', () => {
     const array = new Array(3);
 
