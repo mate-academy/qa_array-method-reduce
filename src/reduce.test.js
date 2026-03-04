@@ -28,11 +28,29 @@ describe('reduce', () => {
     expect(cb).toHaveBeenCalledTimes(3);
   });
 
-  it('should not call a callback if array is empty', () => {
+  it(`should not call a callback and return initial value
+      if array is empty`, () => {
+    const cb = jest.fn();
+    const result = [].reduce2(cb, 0);
+
+    expect(cb).not.toHaveBeenCalled();
+    expect(result).toBe(0);
+  });
+
+  it(`should throw a TypeError if array is empty
+      while no initial value is given`, () => {
     const cb = jest.fn();
 
-    [].reduce2(cb, 0);
+    expect(() => [].reduce2(cb)).toThrow(TypeError);
+  });
+
+  it(`should return an item from array with a single item
+      when no initial value is given`, () => {
+    const cb = jest.fn();
+    const result = [1].reduce2(cb);
+
     expect(cb).not.toHaveBeenCalled();
+    expect(result).toBe(1);
   });
 
   it('should pass an accumulator and current value to a callback', () => {
@@ -41,7 +59,11 @@ describe('reduce', () => {
     [1, 2, 3, 4].reduce2(cb, 0);
 
     expect(cb).toHaveBeenNthCalledWith(
-      4, 6, 4, expect.anything(), expect.anything()
+      4,
+      6,
+      4,
+      expect.anything(),
+      expect.anything(),
     );
   });
 
