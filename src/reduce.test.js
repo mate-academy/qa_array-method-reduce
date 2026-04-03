@@ -41,6 +41,12 @@ describe('Custom reduce method', () => {
     expect(result).toBe(100);
   });
 
+  it('should throw TypeError for empty array without initial value', () => {
+    expect(() => {
+      reduce.call([], (acc, num) => acc + num);
+    }).toThrow(TypeError);
+  });
+
   it('should call callback correct number of times', () => {
     const callback = jest.fn((acc, num) => acc + num);
 
