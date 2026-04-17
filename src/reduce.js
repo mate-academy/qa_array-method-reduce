@@ -10,6 +10,14 @@ function reduce(callback, startValue) {
   let prev = startValue;
   let startIndex = 0;
 
+  if (typeof callback !== 'function') {
+    throw new TypeError('Callback is not a function')
+  }
+
+  if (this.length === 0 && arguments.length < 2) {
+    throw new TypeError('Reduce of empty array with no initial value');
+  }
+
   if (arguments.length < 2) {
     startIndex = 1;
     prev = this[0];
