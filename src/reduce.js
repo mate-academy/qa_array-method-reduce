@@ -11,12 +11,26 @@ function reduce(callback, startValue) {
   let startIndex = 0;
 
   if (arguments.length < 2) {
-    startIndex = 1;
-    prev = this[0];
+    let found = false;
+
+    for (let i = 0; i < this.length; i++) {
+      if (i in this) {
+        prev = this[i];
+        startIndex = i + 1;
+        found = true;
+        break;
+      }
+    }
+
+    if (!found) {
+      throw new TypeError('Reduce of empty array with no initial value');
+    }
   }
 
   for (let i = startIndex; i < this.length; i++) {
-    prev = callback(prev, this[i], i, this);
+    if (i in this) {
+      prev = callback(prev, this[i], i, this);
+    }
   }
 
   return prev;
