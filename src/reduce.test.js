@@ -15,7 +15,7 @@ describe('reduce', () => {
     expect(Array.prototype.reduce2).toBeInstanceOf(Function);
   });
 
-  it(`should return one value`, () => {
+  it(`should call callback once with the correct arguments when initialValue is omitted`, () => {
     const array = [1, 100];
     const getMax = (a, b) => Math.max(a, b);
     const result = array.reduce2(getMax, 50);
@@ -23,20 +23,23 @@ describe('reduce', () => {
     expect(result).toBe(100);
   });
 
-  it(`should return callback that invoked once for element at index 1`, () => {
+  it(`should be called`, () => {
     const array = [1, 100];
-    const getMax = (a, b) => Math.max(a, b);
-    const result = array.reduce2(getMax);
+    const fn = jest.fn();
 
-    expect(result).toBe(100);
+    array.reduce2(fn);
+
+    expect(fn).toHaveBeenCalledTimes(1);
+    expect(fn).toHaveBeenCalledWith(1, 100, 1, array);
   });
 
-  it(`should return callback that not invoked`, () => {
+  it(`should not invoke callback for an array with one element and no initialValue`, () => {
     const array = [50];
-    const getMax = (a, b) => Math.max(a, b);
-    const result = array.reduce2(getMax);
+    const getMax = jest.fn((a, b) => Math.max(a, b));
 
-    expect(result).toBe(50);
+    array.reduce2(getMax);
+
+    expect(getMax).not.toHaveBeenCalled();
   });
 
   it(`should return Undefined`, () => {
@@ -46,13 +49,22 @@ describe('reduce', () => {
     expect(array.reduce2(getMax)).toBeUndefined();
   });
 
-  it(`should have to be call 4 times`, () => {
+  it(`should invoke callback four times when initialValue is provided`, () => {
     const array = [1, 2, 3, 4];
     const fn = jest.fn();
 
     array.reduce2(fn, 1);
 
     expect(fn).toHaveBeenCalledTimes(4);
+  });
+
+  it(`should invoke callback three times when initialValue is omitted`, () => {
+    const array = [1, 2, 3, 4];
+    const fn = jest.fn();
+
+    array.reduce2(fn);
+
+    expect(fn).toHaveBeenCalledTimes(3);
   });
 
   it(`should return TypeError if callback not given`, () => {
@@ -71,5 +83,15 @@ describe('reduce', () => {
     expect(fn).toHaveBeenNthCalledWith(2, 10, 20, 1, array);
     expect(fn).toHaveBeenNthCalledWith(3, 30, 30, 2, array);
     expect(fn).toHaveBeenNthCalledWith(4, 60, 40, 3, array);
+  });
+
+  it('hould return initialValue when the array is empty', () => {
+    const fn = jest.fn((acc, current) => acc + current);
+    const initialValue = 2;
+
+    const result = [].reduce2(fn, initialValue);
+
+    expect(fn).not.toHaveBeenCalled();
+    expect(result).toBe(initialValue);
   });
 });
